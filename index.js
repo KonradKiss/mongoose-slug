@@ -27,13 +27,15 @@ var slug = require('speakingurl');
 module.exports = function(prop, opts) {
   return function slugize(schema) {
 
+    console.log('Prop, Opts, Schema', prop, opts, schema);
+
     var unique = (opts && opts.unique) ? true : false;
 
     var title;
     schema.add({
       slug: {
         type: 'String',
-        unique: (opts && opts.unique) ? true : false
+        unique: unique
       }
     });
 
@@ -49,11 +51,16 @@ module.exports = function(prop, opts) {
       if (prop && Array.isArray(prop)) {
         var titles = [];
         prop.forEach(function(el) {
-          titles.push(self[el]);
+          var path = el.split('.');
+          var val = self;
+          path.forEach(function(p) {
+            val = val[p];
+          });
+          titles.push(val);
         });
         title = titles.join(' ');
       } else {
-        title = this[prop || 'title'];
+        title = this[prop || '_id'];
       }
 
       var require = (opts && opts.required === false) ? false : true;
