@@ -27,8 +27,6 @@ var slug = require('speakingurl');
 module.exports = function(prop, opts) {
   return function slugize(schema) {
 
-    console.log('Prop, Opts, Schema', prop, opts, schema);
-
     var unique = (opts && opts.unique) ? true : false;
 
     var title;
